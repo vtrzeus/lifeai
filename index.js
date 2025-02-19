@@ -1,12 +1,20 @@
 const express = require('express');
-const bodyParser = require('body-parser'); // For handling POST requests
-const axios = require('axios'); // For API requests
+const bodyParser = require('body-parser');
+const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 10000;
 
 // Middleware to parse JSON
 app.use(bodyParser.json());
+
+// Serve static files (CSS, images, etc.)
+app.use(express.static('public'));
+
+// Route to render the main page
+app.get('/', (req, res) => {
+  res.render('index.ejs');
+});
 
 // Route to handle AI requests
 app.post('/chat', async (req, res) => {
@@ -28,7 +36,7 @@ app.post('/chat', async (req, res) => {
       },
       {
         headers: {
-          'Authorization': `Bearer ${process.env.YOUR_OPENAI_API_KEY}`, // Use your environment variable for the API key
+          'Authorization': `Bearer ${process.env.YOUR_OPENAI_API_KEY}`, // Use your environment variable
           'Content-Type': 'application/json'
         }
       }
